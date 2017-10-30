@@ -11,17 +11,19 @@ public class WordNet {
     // constructor takes the name of the two input files
     public WordNet(String synsets, String hypernyms) {
         In synsetsStream = new In(synsets);
+        int v=0;
         while (synsetsStream.hasNextLine()) {
             String[] segments = synsetsStream.readLine().split(",");
             int synsetId = Integer.parseInt(segments[0]);
+            v++;
             List<String> synonyms = Arrays.asList(segments[1].split(" "));
             for (String synonym : synonyms) {
                 nouns.put(synonym, synsetId);
             }
         }
 
+        hypernymsGraph = new Digraph(v);
         In hypernymsStream = new In(hypernyms);
-        hypernymsGraph = new Digraph(hypernymsStream);
         SAP sap = new SAP(hypernymsGraph);
     }
 
