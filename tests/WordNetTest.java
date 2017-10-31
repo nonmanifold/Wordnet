@@ -22,4 +22,17 @@ public class WordNetTest {
        // List<String> nounsArr = FluentIterable.from(nouns).toList();
         assertArrayEquals(new String[]{"a", "b", "c"}, nounsArr.toArray());
     }
+
+    @Test
+    public void ThrowIAEonNonRootedDAG() {
+        thrown.expect(IllegalArgumentException.class);
+        new WordNet("synsets3.txt", "hypernyms3InvalidCycle.txt");
+    }
+
+    @Test
+    public void ThrowIAEonInvalidCycle() {
+        thrown.expect(IllegalArgumentException.class);
+        new WordNet("synsets3.txt", "hypernyms3InvalidCycle.txt");
+    }
+
 }

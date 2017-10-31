@@ -7,24 +7,34 @@ public class WordNet {
 
     private final Digraph hypernymsGraph;
     private HashMap<String, Integer> nouns = new HashMap<>();
+    private HashMap<Integer, String> originalSynsets = new HashMap<>();
 
     // constructor takes the name of the two input files
     public WordNet(String synsets, String hypernyms) {
         In synsetsStream = new In(synsets);
-        int v=0;
+        int vertexCount = 0;
         while (synsetsStream.hasNextLine()) {
             String[] segments = synsetsStream.readLine().split(",");
             int synsetId = Integer.parseInt(segments[0]);
-            v++;
+            vertexCount++;
+            originalSynsets.put(synsetId, segments[1]);
             List<String> synonyms = Arrays.asList(segments[1].split(" "));
             for (String synonym : synonyms) {
                 nouns.put(synonym, synsetId);
             }
         }
 
-        hypernymsGraph = new Digraph(v);
+        hypernymsGraph = new Digraph(vertexCount);
         In hypernymsStream = new In(hypernyms);
-        SAP sap = new SAP(hypernymsGraph);
+        while (hypernymsStream.hasNextLine()) {
+            String[] segments = hypernymsStream.readLine().split(",");
+            int v = Integer.parseInt(segments[0]);
+            for (int i = 1; i < segments.length; i++) {
+                int w = Integer.parseInt(segments[i]);
+                hypernymsGraph.addEdge(v, w);
+            }
+        }
+        // todo check if hypernymsGraph not a rooted DAG
     }
 
     // returns all WordNet nouns
@@ -34,16 +44,22 @@ public class WordNet {
 
     // is the word a WordNet noun?
     public boolean isNoun(String word) {
+        if (word == null) {
+            throw new IllegalArgumentException();
+        }
         return nouns.containsKey(word);
     }
 
     // distance between nounA and nounB
     public int distance(String nounA, String nounB) {
-
-        int nounAId=nouns.get(nounA);
-        int nounBId=nouns.get(nounB);
-
-        return 0;
+        if (isNoun(nounA) && isNoun(nounB)) {
+            int nounAId = nouns.get(nounA);
+            int nounBId = nouns.get(nounB);
+            SAP sap = new SAP(hypernymsGraph);
+            return sap.length(nounAId, nounBId);
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     // a synset (second field of synsets.txt) that is the common ancestor of nounA and nounB
@@ -53,7 +69,14 @@ public class WordNet {
     //  together with a directed path from w to the same ancestor x.
     //  A shortest ancestral path is an ancestral path of minimum total length.
     public String sap(String nounA, String nounB) {
-        return null;
+        if (isNoun(nounA) && isNoun(nounB)) {
+            int nounAId = nouns.get(nounA);
+            int nounBId = nouns.get(nounB);
+            SAP sap = new SAP(hypernymsGraph);
+            return originalSynsets.get(sap.ancestor(nounAId, nounBId));
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     // do unit testing of this class

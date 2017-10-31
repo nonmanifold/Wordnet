@@ -15,7 +15,7 @@ public class SAPTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Test
-    public void Loading_digraph1() {
+    public void Validate_digraph1() {
         In in = new In("digraph1.txt");
         Digraph G = new Digraph(in);
         SAP sap = new SAP(G);
@@ -31,6 +31,14 @@ public class SAPTest {
 
         assertEquals(-1, sap.length(1, 6));
         assertEquals(-1, sap.ancestor(1, 6));
+    }
 
+    @Test
+    public void Validate_digraph2() {
+        In in = new In("digraph2.txt");
+        Digraph G = new Digraph(in);
+        SAP sap = new SAP(G);
+        assertEquals(2, sap.length(1, 5));
+        assertEquals(0, sap.ancestor(1, 5));
     }
 }
