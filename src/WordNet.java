@@ -1,7 +1,11 @@
 import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.Stack;
+import edu.princeton.cs.algs4.Topological;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 public class WordNet {
 
@@ -34,7 +38,11 @@ public class WordNet {
                 hypernymsGraph.addEdge(v, w);
             }
         }
-        // todo check if hypernymsGraph not a rooted DAG
+        DepthFirstOrder dfo = new DepthFirstOrder(hypernymsGraph);
+        Topological tg = new Topological(hypernymsGraph);
+        if(!tg.hasOrder()){
+            throw new IllegalArgumentException("hypernymsGraph has cycle.");
+        }
     }
 
     // returns all WordNet nouns
@@ -81,5 +89,41 @@ public class WordNet {
 
     // do unit testing of this class
     public static void main(String[] args) {
+    }
+
+    public class DepthFirstOrder {
+        private boolean foundRoot = false;
+        private boolean[] marked;
+        private Stack<Integer> reversePost;
+
+        DepthFirstOrder(Digraph G) {
+            reversePost = new Stack<Integer>();
+            marked = new boolean[G.V()];
+            for (int v = 0; v < G.V(); v++) {
+                if (G.outdegree(v) == 0) {
+                    if (foundRoot) {
+                        throw new IllegalArgumentException("More than one root.");
+                    }
+                    foundRoot = true;
+                }
+                if (!marked[v]) {
+                    dfs(G, v);
+                }
+            }
+        }
+
+        private void dfs(Digraph G, int v) {
+            marked[v] = true;
+            for (int w : G.adj(v)) {
+                if (!marked[w]) {
+                    dfs(G, w);
+                }
+            }
+            reversePost.push(v);
+        }
+
+        public Iterable<Integer> reversePost() {
+            return reversePost;
+        }
     }
 }

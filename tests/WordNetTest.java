@@ -19,14 +19,14 @@ public class WordNetTest {
         assertFalse("Does not contain 'x'", wn.isNoun("x"));
         Iterable<String> nouns = wn.nouns();
         List<String> nounsArr = StreamSupport.stream(nouns.spliterator(), false).collect(Collectors.toList());
-       // List<String> nounsArr = FluentIterable.from(nouns).toList();
+        // List<String> nounsArr = FluentIterable.from(nouns).toList();
         assertArrayEquals(new String[]{"a", "b", "c"}, nounsArr.toArray());
     }
 
     @Test
-    public void ThrowIAEonNonRootedDAG() {
+    public void ThrowIAEonTwoRoots() {
         thrown.expect(IllegalArgumentException.class);
-        new WordNet("synsets3.txt", "hypernyms3InvalidCycle.txt");
+        new WordNet("synsets3.txt", "hypernyms3InvalidTwoRoots.txt");
     }
 
     @Test
