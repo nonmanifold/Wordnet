@@ -7,8 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class WordNet {
-
-    private final Digraph hypernymsGraph;
+    private final SAP sap;
     private HashMap<String, Integer> nouns = new HashMap<>();
     private HashMap<Integer, String> originalSynsets = new HashMap<>();
 
@@ -27,7 +26,7 @@ public class WordNet {
             }
         }
 
-        hypernymsGraph = new Digraph(vertexCount);
+        Digraph hypernymsGraph = new Digraph(vertexCount);
         In hypernymsStream = new In(hypernyms);
         while (hypernymsStream.hasNextLine()) {
             String[] segments = hypernymsStream.readLine().split(",");
@@ -52,6 +51,7 @@ public class WordNet {
         if (!tg.hasOrder()) {
             throw new IllegalArgumentException("hypernymsGraph has cycle.");
         }
+        sap = new SAP(hypernymsGraph);
     }
 
     // returns all WordNet nouns
@@ -72,7 +72,6 @@ public class WordNet {
         if (isNoun(nounA) && isNoun(nounB)) {
             int nounAId = nouns.get(nounA);
             int nounBId = nouns.get(nounB);
-            SAP sap = new SAP(hypernymsGraph);
             return sap.length(nounAId, nounBId);
         } else {
             throw new IllegalArgumentException();
@@ -89,7 +88,6 @@ public class WordNet {
         if (isNoun(nounA) && isNoun(nounB)) {
             int nounAId = nouns.get(nounA);
             int nounBId = nouns.get(nounB);
-            SAP sap = new SAP(hypernymsGraph);
             return originalSynsets.get(sap.ancestor(nounAId, nounBId));
         } else {
             throw new IllegalArgumentException();
