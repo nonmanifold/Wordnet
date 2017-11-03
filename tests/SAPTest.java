@@ -15,21 +15,34 @@ public class SAPTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Test
-    public void Validate_digraph1() {
+    public void Validate_digraph1_length_calc() {
         In in = new In("digraph1.txt");
         Digraph G = new Digraph(in);
         SAP sap = new SAP(G);
+
         assertEquals(4, sap.length(3, 11));
-        assertEquals(1, sap.ancestor(3, 11));
 
         assertEquals(3, sap.length(9, 12));
-        assertEquals(5, sap.ancestor(9, 12));
-
 
         assertEquals(4, sap.length(7, 2));
-        assertEquals(0, sap.ancestor(7, 2));
 
         assertEquals(-1, sap.length(1, 6));
+
+    }
+
+    @Test
+    public void Validate_digraph1_ancestor_calc() {
+        In in = new In("digraph1.txt");
+        Digraph G = new Digraph(in);
+        SAP sap = new SAP(G);
+
+
+        assertEquals(1, sap.ancestor(3, 11));
+
+        assertEquals(5, sap.ancestor(9, 12));
+
+        assertEquals(0, sap.ancestor(7, 2));
+
         assertEquals(-1, sap.ancestor(1, 6));
     }
 
