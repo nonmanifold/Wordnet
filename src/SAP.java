@@ -40,7 +40,7 @@ public class SAP {
         for (int i = 0; i < g.V(); i++) {
             if (bfv.hasPathTo(i) && bfw.hasPathTo(i)) {
                 // i is common ancestor
-                int totalLength = bfv.distTo(i) + bfv.distTo(i);
+                int totalLength = bfv.distTo(i) + bfw.distTo(i);
                 if (totalLength < length) {
                     length = totalLength;
                 }
