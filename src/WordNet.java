@@ -4,11 +4,12 @@ import edu.princeton.cs.algs4.Topological;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 public class WordNet {
     private final SAP sap;
-    private HashMap<String, Integer> nouns = new HashMap<>();
+    private HashMap<String, LinkedList<Integer>> nouns = new HashMap<>();
     private HashMap<Integer, String> originalSynsets = new HashMap<>();
 
     // constructor takes the name of the two input files
@@ -22,7 +23,10 @@ public class WordNet {
             originalSynsets.put(synsetId, segments[1]);
             List<String> synonyms = Arrays.asList(segments[1].split(" "));
             for (String synonym : synonyms) {
-                nouns.put(synonym, synsetId);
+                if (!nouns.containsKey(synonym)) {
+                    nouns.put(synonym, new LinkedList<Integer>());
+                }
+                nouns.get(synonym).add(synsetId);
             }
         }
 
@@ -70,8 +74,8 @@ public class WordNet {
     // distance between nounA and nounB
     public int distance(String nounA, String nounB) {
         if (isNoun(nounA) && isNoun(nounB)) {
-            int nounAId = nouns.get(nounA);
-            int nounBId = nouns.get(nounB);
+            LinkedList<Integer> nounAId = nouns.get(nounA);
+            LinkedList<Integer> nounBId = nouns.get(nounB);
             return sap.length(nounAId, nounBId);
         } else {
             throw new IllegalArgumentException();
@@ -86,8 +90,8 @@ public class WordNet {
     //  A shortest ancestral path is an ancestral path of minimum total length.
     public String sap(String nounA, String nounB) {
         if (isNoun(nounA) && isNoun(nounB)) {
-            int nounAId = nouns.get(nounA);
-            int nounBId = nouns.get(nounB);
+            LinkedList<Integer> nounAId = nouns.get(nounA);
+            LinkedList<Integer> nounBId = nouns.get(nounB);
             return originalSynsets.get(sap.ancestor(nounAId, nounBId));
         } else {
             throw new IllegalArgumentException();
