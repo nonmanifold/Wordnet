@@ -13,14 +13,21 @@ public class WordNetTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Test
-    public void Loading_SimpleSynsetAndHypernyms() {
-        WordNet wn = new WordNet("synsets3.txt", "hypernyms3InvalidCycle.txt");
-        assertTrue("Contain 'a'", wn.isNoun("a"));
-        assertFalse("Does not contain 'x'", wn.isNoun("x"));
+    public void Loading_SynsetAndHypernyms() {
+        WordNet wn = new WordNet("synsets.txt", "hypernyms.txt");
+        assertTrue("Contain 'worm'", wn.isNoun("worm"));
+        assertFalse("Does not contain 'zzzzzzz'", wn.isNoun("zzzzzzz"));
         Iterable<String> nouns = wn.nouns();
         List<String> nounsArr = StreamSupport.stream(nouns.spliterator(), false).collect(Collectors.toList());
-        // List<String> nounsArr = FluentIterable.from(nouns).toList();
-        assertArrayEquals(new String[]{"a", "b", "c"}, nounsArr.toArray());
+        assertEquals("contain 119188 nouns", 119188, nounsArr.size());
+        assertEquals(23, wn.distance("white_marlin", "mileage"));
+        assertEquals(23, wn.distance("mileage", "white_marlin"));
+
+        assertEquals(33, wn.distance("Black_Plague", "black_marlin"));
+
+        assertEquals(27, wn.distance("American_water_spaniel", "histology"));
+
+        assertEquals(29, wn.distance("Brown_Swiss", "barrel_roll"));
     }
 
     @Test
@@ -34,5 +41,6 @@ public class WordNetTest {
         thrown.expect(IllegalArgumentException.class);
         new WordNet("synsets3.txt", "hypernyms3InvalidCycle.txt");
     }
+
 
 }
