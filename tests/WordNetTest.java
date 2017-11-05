@@ -28,6 +28,9 @@ public class WordNetTest {
         assertEquals(27, wn.distance("American_water_spaniel", "histology"));
 
         assertEquals(29, wn.distance("Brown_Swiss", "barrel_roll"));
+        assertEquals(3, wn.distance("municipality", "region"));
+
+        assertEquals(5, wn.distance("edible_fruit", "physical_entity"));
     }
 
     @Test

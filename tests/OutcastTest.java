@@ -22,25 +22,25 @@ public class OutcastTest {
 
     @Test
     public void Validate_outcast_02() {
-        String outcasts = createOutcast("outcast2.txt");
-        assertEquals("Turing", outcasts);
+        String outcast = createOutcast("outcast2.txt");
+        assertEquals("Turing", outcast);
     }
 
     @Test
     public void Validate_outcast_05() {
-        String outcasts = createOutcast("outcast5.txt");
-        assertEquals("table", outcasts);
+        String outcast = createOutcast("outcast5.txt");
+        assertEquals("table", outcast);
     }
 
     @Test
     public void Validate_outcast_08() {
-        String outcasts = createOutcast("outcast8.txt");
-        assertEquals("bed", outcasts);
+        String outcast = createOutcast("outcast8.txt");
+        assertEquals("bed", outcast);
     }
 
     @Test
     public void Validate_outcast_11() {
-        String outcasts = createOutcast("outcast11.txt");
-        assertEquals("potato", outcasts);
+        String outcast = createOutcast("outcast11.txt");
+        assertEquals("potato", outcast);
     }
 }

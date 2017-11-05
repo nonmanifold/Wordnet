@@ -11,10 +11,10 @@ public class Outcast {
 
     public String outcast(String[] nouns)   // given an array of WordNet nouns, return an outcast
     {
-        int maxDistance = 0;
+        long maxDistance = 0;
         String outcast = null;
         for (String noun : nouns) {
-            int di = 0;
+            long di = 0;
             for (String n : wordnet.nouns()) {
                 di += wordnet.distance(n, noun);
             }
