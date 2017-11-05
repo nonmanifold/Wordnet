@@ -44,15 +44,14 @@ public class SAP {
         bfsV.startBfs(v);
 
         bfsW.startBfs(w);
-        Set<Integer> uniqueList = new HashSet<>();
-        uniqueList.addAll(bfsV.getTouchedVerts());
-        uniqueList.addAll(bfsW.getTouchedVerts());
+        Set<Integer> allTouchedVerts = new HashSet<>();
+        allTouchedVerts.addAll(bfsV.getTouchedVerts());
+        allTouchedVerts.addAll(bfsW.getTouchedVerts());
 
-        for (Integer i : uniqueList)
-            //for (int i = 0; i < g.V(); i++) {
-            if (bfsV.hasPathTo(i) && bfsW.hasPathTo(i)) {
+        for (Integer vert : allTouchedVerts)
+            if (bfsV.hasPathTo(vert) && bfsW.hasPathTo(vert)) {
                 // i is common ancestor
-                int totalLength = bfsV.distTo(i) + bfsW.distTo(i);
+                int totalLength = bfsV.distTo(vert) + bfsW.distTo(vert);
                 if (totalLength < length) {
                     length = totalLength;
                 }

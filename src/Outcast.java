@@ -18,7 +18,7 @@ public class Outcast {
             for (String n : wordnet.nouns()) {
                 int distance = wordnet.distance(n, noun);
                 if (distance > 0) {
-                    di += wordnet.distance(n, noun);
+                    di += distance;
                 }
             }
             if (di > maxDistance) {
