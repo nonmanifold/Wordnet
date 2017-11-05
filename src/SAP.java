@@ -6,10 +6,14 @@ import java.util.Collections;
 public class SAP {
 
     private final Digraph g;
+    private final MultipleBFS bfsV;
+    private final MultipleBFS bfsW;
 
     // constructor takes a digraph (not necessarily a DAG)
     public SAP(Digraph G) {
         g = new Digraph(G);
+        bfsV=new MultipleBFS(g);
+        bfsW=new MultipleBFS(g);
     }
 
     // length of shortest ancestral path between v and w; -1 if no such path
@@ -35,12 +39,12 @@ public class SAP {
         }
         int length = Integer.MAX_VALUE;
 
-        BreadthFirstDirectedPaths bfv = new BreadthFirstDirectedPaths(g, v);
-        BreadthFirstDirectedPaths bfw = new BreadthFirstDirectedPaths(g, w);
+        bfsV.startBfs(v);
+        bfsW.startBfs(w);
         for (int i = 0; i < g.V(); i++) {
-            if (bfv.hasPathTo(i) && bfw.hasPathTo(i)) {
+            if (bfsV.hasPathTo(i) && bfsW.hasPathTo(i)) {
                 // i is common ancestor
-                int totalLength = bfv.distTo(i) + bfw.distTo(i);
+                int totalLength = bfsV.distTo(i) + bfsW.distTo(i);
                 if (totalLength < length) {
                     length = totalLength;
                 }
@@ -59,12 +63,12 @@ public class SAP {
         }
         int length = Integer.MAX_VALUE;
         int ancestor = -1;
-        BreadthFirstDirectedPaths bfv = new BreadthFirstDirectedPaths(g, v);
-        BreadthFirstDirectedPaths bfw = new BreadthFirstDirectedPaths(g, w);
+        bfsV.startBfs(v);
+        bfsW.startBfs(w);
         for (int i = 0; i < g.V(); i++) {
-            if (bfv.hasPathTo(i) && bfw.hasPathTo(i)) {
+            if (bfsV.hasPathTo(i) && bfsW.hasPathTo(i)) {
                 // i is common ancestor
-                int totalLength = bfv.distTo(i) + bfv.distTo(i);
+                int totalLength = bfsV.distTo(i) + bfsW.distTo(i);
                 if (totalLength < length) {
                     length = totalLength;
                     ancestor = i;
