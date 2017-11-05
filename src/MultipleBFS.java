@@ -97,4 +97,7 @@ public class MultipleBFS {
         return path;
     }
 
+    public LinkedList<Integer> getTouchedVerts() {
+        return touchedVerts;
+    }
 }

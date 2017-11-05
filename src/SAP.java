@@ -2,6 +2,8 @@ import edu.princeton.cs.algs4.*;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 public class SAP {
 
@@ -12,8 +14,8 @@ public class SAP {
     // constructor takes a digraph (not necessarily a DAG)
     public SAP(Digraph G) {
         g = new Digraph(G);
-        bfsV=new MultipleBFS(g);
-        bfsW=new MultipleBFS(g);
+        bfsV = new MultipleBFS(g);
+        bfsW = new MultipleBFS(g);
     }
 
     // length of shortest ancestral path between v and w; -1 if no such path
@@ -40,8 +42,14 @@ public class SAP {
         int length = Integer.MAX_VALUE;
 
         bfsV.startBfs(v);
+
         bfsW.startBfs(w);
-        for (int i = 0; i < g.V(); i++) {
+        Set<Integer> uniqueList = new HashSet<>();
+        uniqueList.addAll(bfsV.getTouchedVerts());
+        uniqueList.addAll(bfsW.getTouchedVerts());
+
+        for (Integer i : uniqueList)
+            //for (int i = 0; i < g.V(); i++) {
             if (bfsV.hasPathTo(i) && bfsW.hasPathTo(i)) {
                 // i is common ancestor
                 int totalLength = bfsV.distTo(i) + bfsW.distTo(i);
@@ -49,7 +57,7 @@ public class SAP {
                     length = totalLength;
                 }
             }
-        }
+
         if (length == Integer.MAX_VALUE) {
             length = -1;
         }
