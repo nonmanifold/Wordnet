@@ -1,4 +1,7 @@
-import edu.princeton.cs.algs4.*;
+
+import edu.princeton.cs.algs4.Digraph;
+import edu.princeton.cs.algs4.Queue;
+import edu.princeton.cs.algs4.Stack;
 
 import java.util.LinkedList;
 

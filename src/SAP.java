@@ -1,6 +1,9 @@
-import edu.princeton.cs.algs4.*;
+import edu.princeton.cs.algs4.Digraph;
+import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdOut;
 
-import java.util.Arrays;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -99,4 +102,5 @@ public class SAP {
             StdOut.printf("length = %d, ancestor = %d\n", length, ancestor);
         }
     }
+
 }
